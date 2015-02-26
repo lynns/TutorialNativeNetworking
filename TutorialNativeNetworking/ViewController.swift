@@ -10,16 +10,32 @@ import UIKit
 
 class ViewController: UIViewController {
 
+  @IBOutlet weak var logTextView: UITextView!
+  @IBOutlet weak var sessionIdTextField: UITextField!
+  
+  let sessionId = "USYS2E95B3301698778CD3A76BD1304025C6_idses-refa02.a.fsglobal.net"
+  let runner: RequestRunner!
+  
+  required init(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    self.runner = RequestRunner(logCB: self.logMessage, sessionId: sessionId)
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
   }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
+  
+  func logMessage(message:String) -> () {
+    let newContent = logTextView.text + "\nLOG: " + message
+    
+    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      self.logTextView.text = newContent
+    })
   }
-
-
+  
+  @IBAction func doGETRequest(sender: AnyObject) {
+    runner.performGETRequests()
+  }
+  
 }
 

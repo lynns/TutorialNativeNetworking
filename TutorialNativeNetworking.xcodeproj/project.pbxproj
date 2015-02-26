@@ -13,6 +13,7 @@
 		BDB202741A9F822A002EFD12 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDB202731A9F822A002EFD12 /* Images.xcassets */; };
 		BDB202771A9F822A002EFD12 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDB202751A9F822A002EFD12 /* LaunchScreen.xib */; };
 		BDB202831A9F822A002EFD12 /* TutorialNativeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB202821A9F822A002EFD12 /* TutorialNativeNetworkingTests.swift */; };
+		BDB202941A9FB313002EFD12 /* RequestRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB202931A9FB313002EFD12 /* RequestRunner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		BDB2027C1A9F822A002EFD12 /* TutorialNativeNetworkingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TutorialNativeNetworkingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB202811A9F822A002EFD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDB202821A9F822A002EFD12 /* TutorialNativeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialNativeNetworkingTests.swift; sourceTree = "<group>"; };
+		BDB202931A9FB313002EFD12 /* RequestRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestRunner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,11 +80,12 @@
 			isa = PBXGroup;
 			children = (
 				BDB2026C1A9F822A002EFD12 /* AppDelegate.swift */,
-				BDB2026E1A9F822A002EFD12 /* ViewController.swift */,
-				BDB202701A9F822A002EFD12 /* Main.storyboard */,
 				BDB202731A9F822A002EFD12 /* Images.xcassets */,
 				BDB202751A9F822A002EFD12 /* LaunchScreen.xib */,
+				BDB202701A9F822A002EFD12 /* Main.storyboard */,
+				BDB202931A9FB313002EFD12 /* RequestRunner.swift */,
 				BDB2026A1A9F822A002EFD12 /* Supporting Files */,
+				BDB2026E1A9F822A002EFD12 /* ViewController.swift */,
 			);
 			path = TutorialNativeNetworking;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB202941A9FB313002EFD12 /* RequestRunner.swift in Sources */,
 				BDB2026F1A9F822A002EFD12 /* ViewController.swift in Sources */,
 				BDB2026D1A9F822A002EFD12 /* AppDelegate.swift in Sources */,
 			);
