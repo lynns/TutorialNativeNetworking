@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+  @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var logTextView: UITextView!
   @IBOutlet weak var sessionIdTextField: UITextField!
   
@@ -18,7 +19,7 @@ class ViewController: UIViewController {
   
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-    self.runner = RequestRunner(logCB: self.logMessage, sessionId: sessionId)
+    self.runner = RequestRunner(logCB: self.logMessage, showImage: self.showImage, sessionId: sessionId)
   }
   
   override func viewDidLoad() {
@@ -33,8 +34,20 @@ class ViewController: UIViewController {
     })
   }
   
+  func showImage(image: UIImage) {
+    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      self.imageView.image = image
+    })
+  }
+  
   @IBAction func doGETRequest(sender: AnyObject) {
+    logMessage("START doGETRequest")
     runner.performGETRequests()
+  }
+  
+  @IBAction func doGETImage(sender: AnyObject) {
+    logMessage("START doGETImage")
+    runner.performGETImageRequest()
   }
   
 }

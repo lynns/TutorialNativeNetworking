@@ -6,40 +6,36 @@
 //  Copyright (c) 2015 FamilySearch. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-class RequestRunner {
-  let logCB: (message:String) -> ()
+class RequestRunner: NSObject, NSURLSessionDelegate {
+  let logCB: (message: String) -> ()
+  let showImageCB: (image: UIImage) -> ()
   let sessionId: String
   
-  init(logCB: (message:String) -> (), sessionId: String) {
+  init(logCB: (message:String) -> (), showImage: (image: UIImage) -> (), sessionId: String) {
     self.logCB = logCB
+    self.showImageCB = showImage
     self.sessionId = sessionId
   }
   
   //NOTE: Executes request on background thread by default and returns on the background thread
   //NOTE: Can create a custom config that affects all requests from a given session
   
+  //MARK: - GET simple
+  
   func performGETRequests() {
     let url = NSURL(string: "https://beta.familysearch.org/platform/memories/users/cis.user.MM9X-XF1T/memories")!
     
-    //NOTE: Setup session config that applies to all requests that come from this session
-    let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-    sessionConfig.timeoutIntervalForResource = 30 //seconds for total request
-    sessionConfig.timeoutIntervalForRequest = 15 //seconds for partial responses
-    sessionConfig.HTTPAdditionalHeaders = [
-      "Authorization": "Bearer \(sessionId)"
-    ]
-    
     //    let session: NSURLSession = NSURLSession.sharedSession() //just gives you a preconfigured session
-    let session = NSURLSession(configuration: sessionConfig)
+    let session = self.customSession()
     
     //MARK: Making GET request - shared session with json header just for this request
     
     //NOTE: You can set headers on a single request by using NSMutableURLRequest
     let request = NSMutableURLRequest(URL: url)
     var headers = request.allHTTPHeaderFields ?? [String: String]()
-    headers["Accept"] = "application/json"
+    headers["mySpecialHeader"] = "specialValue"
     request.allHTTPHeaderFields = headers
     
     let task = session.dataTaskWithRequest(request, completionHandler: self.labeledResponseHandler("Custom header GET", self.parseJSONResponse))
@@ -52,11 +48,68 @@ class RequestRunner {
     task2.resume()
   }
   
+  //MARK: - GET Image
+  
+  func performGETImageRequest() {
+    let imageUrl = NSURL(string: "https://beta.familysearch.org/patron/v2/TH-801-46819-13-94/dist.jpg?ctx=ArtCtxPublic")!
+    let sessionConfig = customSessionConfig("image/jpg")
+    let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+    
+    let task = session.downloadTaskWithURL(imageUrl) {
+      (location: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
+      
+      if error != nil {
+        println("Error getting image: \(error!)")
+        
+      } else {
+        if let location = location {
+          println("Got image back at location: \(location.absoluteString)")
+          if let data = NSData(contentsOfURL: location) {
+            if let image = UIImage(data: data) {
+              self.showImageCB(image: image)
+              
+            } else {
+              println("Couldn't convert image data to a UIImage object")
+            }
+            
+          } else {
+            println("Couldn't find image data on disk")
+          }
+        }
+      }
+    }
+    
+    task.resume()
+  }
+  
+  
+  
   //MARK: - Helper Functions
+  
+  func customSessionConfig(acceptType: String?) -> NSURLSessionConfiguration {
+    //NOTE: Setup session config that applies to all requests that come from this session
+    let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
+    sessionConfig.timeoutIntervalForResource = 30 //seconds for total request
+    sessionConfig.timeoutIntervalForRequest = 15 //seconds for partial responses
+    sessionConfig.HTTPAdditionalHeaders = [
+      "Authorization": "Bearer \(sessionId)",
+      "Accept": acceptType ?? "application/json"
+    ]
+    
+    return sessionConfig
+  }
+  
+  func customSession() -> NSURLSession {
+    let sessionConfig = self.customSessionConfig(nil)
+    
+    let session = NSURLSession(configuration: sessionConfig)
+    
+    return session
+  }
   
   func parseStringResponse(data: NSData) {
     let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)
-    println("Response String: \(responseString?.substringToIndex(40))")
+    println("Response String: \(responseString!.substringToIndex(40))")
   }
   
   func parseJSONResponse(data: NSData) {
