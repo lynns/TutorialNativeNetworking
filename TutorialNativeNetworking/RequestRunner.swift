@@ -8,6 +8,8 @@
 
 import UIKit
 
+//NOTE: Helpful tutorial - http://www.raywenderlich.com/51127/nsurlsession-tutorial
+
 class RequestRunner: NSObject, NSURLSessionDelegate {
   let logCB: (message: String) -> ()
   let showImageCB: (image: UIImage) -> ()
@@ -82,9 +84,85 @@ class RequestRunner: NSObject, NSURLSessionDelegate {
     task.resume()
   }
   
+  func performPOSTMultipartImageUpload(image: UIImage) {
+    let url = NSURL(string: "https://beta.familysearch.org/artifactmanager/artifacts/multipart")!
+    
+    let sessionConfig = customSessionConfig("application/json")
+    let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+    
+    let imageData = UIImageJPEGRepresentation(image, 1.0)
+    let params = [
+      "artifactCategory": "IMAGE",
+      "artifactContentCategory": "PHOTO",
+      "title": "This is my title from the test networking project"
+    ]
+    let requestParts = createMultipartRequestParts(imageData, fields: params)
+    
+    let request = NSMutableURLRequest(URL: url)
+    request.HTTPMethod = "POST"
+    var headers = request.allHTTPHeaderFields ?? [String: String]()
+    headers["Content-Type"] = requestParts.contentType
+    request.allHTTPHeaderFields = headers
+    
+    let task = session.uploadTaskWithRequest(request, fromData: requestParts.body, completionHandler: self.labeledResponseHandler("Upload image POST", self.parseJSONResponse))
+    task.resume()
+  }
   
+  func performPOSTImageUpload(image: UIImage) {
+    let url = NSURL(string: "https://beta.familysearch.org/platform/memories/memories?type=IMAGE")!
+    
+    let sessionConfig = customSessionConfig("application/json")
+    let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+    
+    let imageData = UIImageJPEGRepresentation(image, 1.0)
+    
+    let request = NSMutableURLRequest(URL: url)
+    request.HTTPMethod = "POST"
+    var headers = request.allHTTPHeaderFields ?? [String: String]()
+    headers["Content-Type"] = "image/jpeg"
+    headers["Content-Disposition"] = "attachment; filename=\"mobilefile.jpg\""
+    request.allHTTPHeaderFields = headers
+    
+    let task = session.uploadTaskWithRequest(request, fromData: imageData, completionHandler: self.labeledResponseHandler("Upload image POST", self.parseJSONResponse))
+    task.resume()
+  }
   
   //MARK: - Helper Functions
+  
+  func createQueryString(params: [String:String]) -> String {
+    let pairs = map(params.keys, {"\($0)=\(params[$0])"})
+    let queryString = "&".join(pairs)
+    
+    return queryString
+  }
+  
+  func createMultipartRequestParts(data: NSData?, fields: [String:String]?) -> (contentType: String, body: NSData) {
+    let boundary = "FSMobileBoundary"
+    var body = NSMutableData()
+    var paramString = ""
+    
+    for (key,value) in fields! {
+      paramString += "--\(boundary)\r\n"
+      paramString += "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n"
+      paramString += "\(value)\r\n"
+    }
+    
+    body.appendData(paramString.dataUsingEncoding(NSUTF8StringEncoding)!)
+    
+    if let data = data {
+      paramString = "--\(boundary)\r\n"
+      paramString += "Content-Disposition: form-data; name=\"file\"; filename=\"file.jpg\"\r\n"
+      paramString += "Content-Type: image/jpeg\r\n\r\n"
+      
+      body.appendData(paramString.dataUsingEncoding(NSUTF8StringEncoding)!)
+      body.appendData(data)
+    }
+    
+    body.appendData("\r\n--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+    
+    let contentType = "multipart/form-data; boundary=\(boundary)"
+    return (contentType, body)
+  }
   
   func customSessionConfig(acceptType: String?) -> NSURLSessionConfiguration {
     //NOTE: Setup session config that applies to all requests that come from this session
@@ -131,26 +209,27 @@ class RequestRunner: NSObject, NSURLSessionDelegate {
       self.logCB(message: "Response for: \(label)")
       
       //NOTE: http requests will come back with an NSHTTPURLResponse instead of a NSURLResponse
-      let response = response as NSHTTPURLResponse
-      
-      assert(!NSThread.isMainThread(), "This should have returned on a background thread")
-      
-      let statusCode = String(response.statusCode)
-      let contentLength = String(response.expectedContentLength)
-      let contentType = response.allHeaderFields["Content-Type"] as String
-      
-      let items: Dictionary<String,AnyObject> = [
-        "mimetype": response.MIMEType!,
-        "expectedContentLength": contentLength,
-        "statusCode": statusCode,
-        "contentType": contentType
-      ]
-      
-      if error == nil {
-        responseParser(data: data)
+      if let response = response as? NSHTTPURLResponse {
+        
+        assert(!NSThread.isMainThread(), "This should have returned on a background thread")
+        
+        let statusCode = String(response.statusCode)
+        let contentLength = String(response.expectedContentLength)
+        let contentType = response.allHeaderFields["Content-Type"] as String
+        
+        let items: Dictionary<String,AnyObject> = [
+          "mimetype": response.MIMEType!,
+          "expectedContentLength": contentLength,
+          "statusCode": statusCode,
+          "contentType": contentType
+        ]
+        
+        if error == nil {
+          responseParser(data: data)
+        }
+        
+        self.logCB(message: "\(items)")
       }
-      
-      self.logCB(message: "\(items)")
     }
   }
 }

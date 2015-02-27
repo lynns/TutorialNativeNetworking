@@ -14,7 +14,7 @@ class ViewController: UIViewController {
   @IBOutlet weak var logTextView: UITextView!
   @IBOutlet weak var sessionIdTextField: UITextField!
   
-  let sessionId = "USYS2E95B3301698778CD3A76BD1304025C6_idses-refa02.a.fsglobal.net"
+  let sessionId = "USYS90F010A66D43CF8108AAF2C734378B5C_idses-refa02.a.fsglobal.net"
   let runner: RequestRunner!
   
   required init(coder aDecoder: NSCoder) {
@@ -48,6 +48,16 @@ class ViewController: UIViewController {
   @IBAction func doGETImage(sender: AnyObject) {
     logMessage("START doGETImage")
     runner.performGETImageRequest()
+  }
+  
+  @IBAction func doPOSTMultipartImage(sender: AnyObject) {
+    logMessage("START doPOSTMultipartImage")
+    runner.performPOSTMultipartImageUpload(imageView.image!)
+  }
+  
+  @IBAction func doPOSTImage(sender: AnyObject) {
+    logMessage("START doPOSTImage")
+    runner.performPOSTImageUpload(imageView.image!)
   }
   
 }
