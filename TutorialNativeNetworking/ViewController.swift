@@ -8,18 +8,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var logTextView: UITextView!
   @IBOutlet weak var sessionIdTextField: UITextField!
   
-  let sessionId = "USYS90F010A66D43CF8108AAF2C734378B5C_idses-refa02.a.fsglobal.net"
+  let sessionId = "USYS15A2D3D823A157486F3874134FA54192_idses-refa02.a.fsglobal.net"
   let runner: RequestRunner!
+  let backgroundRunner: BackgroundRequestRunner!
+  
+  var imagePicker = UIImagePickerController()
   
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     self.runner = RequestRunner(logCB: self.logMessage, showImage: self.showImage, sessionId: sessionId)
+    self.backgroundRunner = BackgroundRequestRunner(logCB: self.logMessage, sessionId: sessionId)
   }
   
   override func viewDidLoad() {
@@ -60,5 +64,24 @@ class ViewController: UIViewController {
     runner.performPOSTImageUpload(imageView.image!)
   }
   
+  @IBAction func doBackgroundPOSTImage(sender: AnyObject) {
+    logMessage("START doBackgroundPOSTImage")
+    backgroundRunner.performBackgroundPOSTImageUpload(imageView.image!)
+  }
+  
+  @IBAction func pickImage(sender: AnyObject) {
+    if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
+      imagePicker.delegate = self
+      imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum;
+      imagePicker.allowsEditing = false
+      
+      self.presentViewController(imagePicker, animated: true, completion: nil)
+    }
+  }
+  
+  func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    self.dismissViewControllerAnimated(true, completion: nil)
+    imageView.image = image
+  }
 }
 

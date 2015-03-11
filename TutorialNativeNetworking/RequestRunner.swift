@@ -10,7 +10,7 @@ import UIKit
 
 //NOTE: Helpful tutorial - http://www.raywenderlich.com/51127/nsurlsession-tutorial
 
-class RequestRunner: NSObject, NSURLSessionDelegate {
+class RequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
   let logCB: (message: String) -> ()
   let showImageCB: (image: UIImage) -> ()
   let sessionId: String

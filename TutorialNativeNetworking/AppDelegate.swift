@@ -41,6 +41,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
 
+  func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
+    open question is this gets called when app was freshly put in background and the delegate is still registered on the original session object so how do
+    we know when we need to process the tasks here vs the session with it's delegate still exists?????  use a singleton????
+    println("CALLED HANDLEEVENTSFORBACKGROUNDURLSESSION: \(identifier)")
+    completionHandler()
+  }
 
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD766F401AAFFD74004795E6 /* BackgroundRequestRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD766F3F1AAFFD74004795E6 /* BackgroundRequestRunner.swift */; };
 		BDB2026D1A9F822A002EFD12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2026C1A9F822A002EFD12 /* AppDelegate.swift */; };
 		BDB2026F1A9F822A002EFD12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2026E1A9F822A002EFD12 /* ViewController.swift */; };
 		BDB202721A9F822A002EFD12 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB202701A9F822A002EFD12 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD766F3F1AAFFD74004795E6 /* BackgroundRequestRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundRequestRunner.swift; sourceTree = "<group>"; };
 		BDB202671A9F822A002EFD12 /* TutorialNativeNetworking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TutorialNativeNetworking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB2026B1A9F822A002EFD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDB2026C1A9F822A002EFD12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				BDB202931A9FB313002EFD12 /* RequestRunner.swift */,
 				BDB2026A1A9F822A002EFD12 /* Supporting Files */,
 				BDB2026E1A9F822A002EFD12 /* ViewController.swift */,
+				BD766F3F1AAFFD74004795E6 /* BackgroundRequestRunner.swift */,
 			);
 			path = TutorialNativeNetworking;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				BDB202941A9FB313002EFD12 /* RequestRunner.swift in Sources */,
 				BDB2026F1A9F822A002EFD12 /* ViewController.swift in Sources */,
 				BDB2026D1A9F822A002EFD12 /* AppDelegate.swift in Sources */,
+				BD766F401AAFFD74004795E6 /* BackgroundRequestRunner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +413,7 @@
 				BDB202881A9F822A002EFD12 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BDB202891A9F822A002EFD12 /* Build configuration list for PBXNativeTarget "TutorialNativeNetworkingTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +422,7 @@
 				BDB2028B1A9F822A002EFD12 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
