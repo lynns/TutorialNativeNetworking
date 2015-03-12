@@ -16,6 +16,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
   
   let sessionId = "USYS8B3F84AF51A5B8312F38CD36C88ADB2F_idses-refa03.a.fsglobal.net"
   let runner: RequestRunner!
+  let runnerSessionRestore: RequestRunnerSessionRestore!
   let backgroundRunner: BackgroundRequestRunner!
   
   var imagePicker = UIImagePickerController()
@@ -23,6 +24,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
   required init(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     self.runner = RequestRunner(logCB: self.logMessage, showImage: self.showImage, sessionId: sessionId)
+    self.runnerSessionRestore = RequestRunnerSessionRestore(logCB: self.logMessage, sessionId: sessionId)
     self.backgroundRunner = BackgroundRequestRunner(logCB: self.logMessage, sessionId: sessionId)
   }
   
@@ -42,6 +44,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     dispatch_async(dispatch_get_main_queue(), { () -> Void in
       self.imageView.image = image
     })
+  }
+  
+  @IBAction func doGETRequestWithSessionRestore(sender: AnyObject) {
+    logMessage("START doGETRequestWithSessionRestore")
+    runnerSessionRestore.performGETRequest()
   }
   
   @IBAction func doGETRequest(sender: AnyObject) {
