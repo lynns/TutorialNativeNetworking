@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD766F401AAFFD74004795E6 /* BackgroundRequestRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD766F3F1AAFFD74004795E6 /* BackgroundRequestRunner.swift */; };
+		BD7FDB3C1AB0F93F004085A0 /* BackgroundSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7FDB3B1AB0F93F004085A0 /* BackgroundSessionDelegate.swift */; };
 		BDB2026D1A9F822A002EFD12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2026C1A9F822A002EFD12 /* AppDelegate.swift */; };
 		BDB2026F1A9F822A002EFD12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2026E1A9F822A002EFD12 /* ViewController.swift */; };
 		BDB202721A9F822A002EFD12 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB202701A9F822A002EFD12 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		BD766F3F1AAFFD74004795E6 /* BackgroundRequestRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundRequestRunner.swift; sourceTree = "<group>"; };
+		BD7FDB3B1AB0F93F004085A0 /* BackgroundSessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundSessionDelegate.swift; sourceTree = "<group>"; };
 		BDB202671A9F822A002EFD12 /* TutorialNativeNetworking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TutorialNativeNetworking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB2026B1A9F822A002EFD12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDB2026C1A9F822A002EFD12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				BDB2026A1A9F822A002EFD12 /* Supporting Files */,
 				BDB2026E1A9F822A002EFD12 /* ViewController.swift */,
 				BD766F3F1AAFFD74004795E6 /* BackgroundRequestRunner.swift */,
+				BD7FDB3B1AB0F93F004085A0 /* BackgroundSessionDelegate.swift */,
 			);
 			path = TutorialNativeNetworking;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				BDB2026F1A9F822A002EFD12 /* ViewController.swift in Sources */,
 				BDB2026D1A9F822A002EFD12 /* AppDelegate.swift in Sources */,
 				BD766F401AAFFD74004795E6 /* BackgroundRequestRunner.swift in Sources */,
+				BD7FDB3C1AB0F93F004085A0 /* BackgroundSessionDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

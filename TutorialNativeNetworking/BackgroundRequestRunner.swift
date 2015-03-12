@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BackgroundRequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
+class BackgroundRequestRunner: NSObject {
   let logCB: (message: String) -> ()
   let sessionId: String
   
@@ -25,8 +25,13 @@ class BackgroundRequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskD
       "Accept": "application/json"
     ]
     
-    let url = NSURL(string: "https://beta.familysearch.org/platform/memories/memories?type=IMAGE")!
-    let session = NSURLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
+    //this url will throw an error because the title is too long
+//    let url = NSURL(string: "https://beta.familysearch.org/platform/memories/memories?type=IMAGE&title=12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")!
+    //this url is valid
+    let url = NSURL(string: "https://beta.familysearch.org/platform/memories/memories?type=IMAGE&title=ThisIsTheTitle")!
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    let session = NSURLSession(configuration: sessionConfig, delegate: appDelegate.backgroundSessionDelegate, delegateQueue: nil)
     let imageDiskPath = saveImageToDisk(image)
     
     let request = NSMutableURLRequest(URL: url)
@@ -34,9 +39,11 @@ class BackgroundRequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskD
     var headers = request.allHTTPHeaderFields ?? [String: String]()
     headers["Content-Type"] = "image/jpeg"
     headers["Content-Disposition"] = "attachment; filename=\"mobilefile.jpg\""
+    headers["theArbitraryID"] = "This is my id to see if we can pass stuff through"
     request.allHTTPHeaderFields = headers
     
     let task = session.uploadTaskWithRequest(request, fromFile: imageDiskPath!)
+    println("Starting background upload task")
     task.resume()
   }
   
@@ -54,17 +61,5 @@ class BackgroundRequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskD
     }
     
     return nil
-  }
-  
-  //MARK: NSURLSessionDelegate
-  
-  func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
-    println("DONE DOING BACKGROUND FETCH TASKS")
-  }
-  
-  //MARK: NSURLSessionTaskDelegate
-  
-  func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-    println("TASK REPORTED COMPLETE\nTask: \(task)\nERROR: \(error)")
   }
 }
