@@ -53,9 +53,9 @@ class RequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
   //MARK: - GET Image
   
   func performGETImageRequest() {
-    let imageUrl = NSURL(string: "https://beta.familysearch.org/patron/v2/TH-801-46819-13-94/dist.jpg?ctx=ArtCtxPublic")!
+    let imageUrl = NSURL(string: "http://10.88.96.184:5000/getImage")!
     let sessionConfig = customSessionConfig("image/jpg")
-    let session = NSURLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+    let session = NSURLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
     
     let task = session.downloadTaskWithURL(imageUrl) {
       (location: NSURL!, response: NSURLResponse!, error: NSError!) -> Void in
@@ -232,4 +232,22 @@ class RequestRunner: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate {
       }
     }
   }
+  
+  func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
+    println("Into session challenge: \(challenge)")
+  }
+  
+  func URLSession(session2: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
+    println("Into task challenge: \(challenge)")
+    
+    var headers: Dictionary<String,String> = session2.configuration.HTTPAdditionalHeaders as Dictionary<String,String>
+    headers["Authorization"] = "Bearer thisisthenewsessionid"
+    session2.configuration.HTTPAdditionalHeaders = headers
+    
+    completionHandler(NSURLSessionAuthChallengeDisposition.UseCredential, nil)
+  }
 }
+
+
+
+

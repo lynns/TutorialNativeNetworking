@@ -14,7 +14,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
   @IBOutlet weak var logTextView: UITextView!
   @IBOutlet weak var sessionIdTextField: UITextField!
   
-  let sessionId = "USYS8B3F84AF51A5B8312F38CD36C88ADB2F_idses-refa03.a.fsglobal.net"
+  let sessionId = "USYSF33EA41513EE572E4AE5D7792AC8C18D_idses-refa02.a.fsglobal.net"
   let runner: RequestRunner!
   let runnerSessionRestore: RequestRunnerSessionRestore!
   let backgroundRunner: BackgroundRequestRunner!

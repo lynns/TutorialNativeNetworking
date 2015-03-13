@@ -80,18 +80,18 @@ class RequestRunnerSessionRestore: NSObject, NSURLSessionDelegate, NSURLSessionT
         
         self.logCB(message: "\(items)")
         
-        if statusCode == "401" {
-          println("Need to restore the session here")
-          var globalHeaders = self.session.configuration.HTTPAdditionalHeaders ?? [String: String]()
-          println("Original headers: \(globalHeaders)")
-          
-          globalHeaders["Authorization"] = "Bearer \(self.sessionId)"
-          self.session.configuration.HTTPAdditionalHeaders = globalHeaders
-          println("Updated headers: \(globalHeaders)")
-            
-          let task = self.session.dataTaskWithRequest(request, completionHandler: self.labeledResponseHandler("Custom header GET", request: request, self.parseStringResponse))
-          task.resume()
-        }
+//        if statusCode == "401" {
+//          println("Need to restore the session here")
+//          var globalHeaders = self.session.configuration.HTTPAdditionalHeaders ?? [String: String]()
+//          println("Original headers: \(globalHeaders)")
+//          
+//          globalHeaders["Authorization"] = "Bearer \(self.sessionId)"
+//          self.session.configuration.HTTPAdditionalHeaders = globalHeaders
+//          println("Updated headers: \(globalHeaders)")
+//            
+//          let task = self.session.dataTaskWithRequest(request, completionHandler: self.labeledResponseHandler("Custom header GET", request: request, self.parseStringResponse))
+//          task.resume()
+//        }
       }
     }
   }
@@ -100,7 +100,7 @@ class RequestRunnerSessionRestore: NSObject, NSURLSessionDelegate, NSURLSessionT
   
   func URLSession(session2: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
     println("Got an auth challenge")
-    completionHandler(NSURLSessionAuthChallengeDisposition.PerformDefaultHandling, nil)
+//    completionHandler(NSURLSessionAuthChallengeDisposition.PerformDefaultHandling, nil)
     //Haven't figured out how to deal with failed auth here so that it actually retries
     //This also seems to get called no matter what error code, even for 404s and I haven't seen a way to tell what the error code is
 
@@ -114,6 +114,7 @@ class RequestRunnerSessionRestore: NSObject, NSURLSessionDelegate, NSURLSessionT
 //    
 ////    completionHandler(NSURLSessionAuthChallengeDisposition.CancelAuthenticationChallenge, nil)
 //    //tell it to retry
-//    completionHandler(NSURLSessionAuthChallengeDisposition.UseCredential, nil)
+    let credential = NSURLCredential(user: "myUsername", password: "myPassword", persistence: NSURLCredentialPersistence.None)
+    completionHandler(NSURLSessionAuthChallengeDisposition.UseCredential, credential)
   }
 }

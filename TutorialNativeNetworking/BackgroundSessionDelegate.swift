@@ -62,4 +62,12 @@ class BackgroundSessionDelegate: NSObject, NSURLSessionDelegate, NSURLSessionTas
     }
   }
   
+  func URLSession(session: NSURLSession, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
+    println("INto the challenge: \(challenge)")
+  }
+  
+  func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential!) -> Void) {
+    println("Into task challenge: \(challenge)")
+  }
+  
 }

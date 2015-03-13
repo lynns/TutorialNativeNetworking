@@ -20,6 +20,7 @@ class BackgroundRequestRunner: NSObject {
   //https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/URLLoadingSystem/Articles/UsingNSURLSession.html#//apple_ref/doc/uid/TP40013509-SW1
   func performBackgroundPOSTImageUpload(image: UIImage) {
     let sessionConfig = NSURLSessionConfiguration.backgroundSessionConfiguration("backgroundSessionId")
+    sessionConfig.allowsCellularAccess = false
     sessionConfig.HTTPAdditionalHeaders = [
       "Authorization": "Bearer \(sessionId)",
       "Accept": "application/json"
